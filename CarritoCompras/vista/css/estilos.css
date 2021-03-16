@@ -1,0 +1,31 @@
+h1, h2, h3, h4, h5, h6 {
+    margin: 0;
+    font-family: 'Kufam';
+    font-weight: 600;
+}
+
+.colorCab {
+    background: linear-gradient(270deg, rgba(2,0,36,1) 0%, rgba(0,46,94,1) 60%, rgba(0,123,255,1) 100%);
+}
+
+.formulario {
+    background-color: #f0f2f5;
+    border: 2px solid #dae0e5;
+}
+
+.colorFooter {
+    color: #fff;
+    background-color: #1b1b1b;
+}
+
+.navbar-toggler:focus,
+.navbar-toggler:active,
+.navbar-toggler-icon:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+/* Le cambio el idioma al browser */
+.custom-file-input ~ .custom-file-label::after {
+    content: "Elegir";
+}
