@@ -107,10 +107,10 @@ function generarHash() {
     var descargas = document.getElementById("descargas").value;
 
     if (dias == 0 && descargas == 0) {
-        var hash = "9007199254740991"; 
-    }else{
+        var hash = "9007199254740991";
+    } else {
         var cadena = "";
-        cadena += dias+descargas+nombreArchivo;
+        cadena += dias + descargas + nombreArchivo;
         var hash = md5(cadena);
     }
 
