@@ -1,4 +1,5 @@
 <?php
+
 class Producto
 {
     private $idproducto;
@@ -17,6 +18,7 @@ class Producto
         $this->procantstock = "";
         $this->mensajeoperacion = "";
     }
+
     public function setear($idproducto, $pronombre, $prodetalle, $procantstock)
     {
         $this->setIdProducto($idproducto);
@@ -81,10 +83,11 @@ class Producto
                 if ($res > 0) {
                     $row = $base->Registro();
                     $this->setear($row['idproducto'], $row['pronombre'], $row['prodetalle'], $row['procantstock']);
+                    $resp = true;
                 }
             }
         } else {
-            $this->setmensajeoperacion("Tabla->listar: " . $base->getError());
+            $this->setmensajeoperacion("Producto->listar: " . $base->getError());
         }
         return $resp;
     }
@@ -93,16 +96,16 @@ class Producto
     {
         $resp = false;
         $base = new BaseDatos();
-        $sql = "INSERT INTO producto(pronombre, prodetalle, procantstock)  VALUES('" . $this->getProNombre() . "','" . $this->getProDetalle() . "','" . $this->getProStock() . "');";
+        $sql = "INSERT INTO producto (pronombre, prodetalle, procantstock) VALUES ('" . $this->getProNombre() . "','" . $this->getProDetalle() . "','" . $this->getProStock() . "');";
         if ($base->Iniciar()) {
-            if ($elid = $base->Ejecutar($sql)) {
-                $this->setIdProducto($elid);
+            if ($base = $base->Ejecutar($sql)) {
+                $this->setIdProducto($base);
                 $resp = true;
             } else {
-                $this->setmensajeoperacion("Tabla->insertar: " . $base->getError());
+                $this->setmensajeoperacion("Producto->insertar: " . $base->getError());
             }
         } else {
-            $this->setmensajeoperacion("Tabla->insertar: " . $base->getError());
+            $this->setmensajeoperacion("Producto->insertar: " . $base->getError());
         }
         return $resp;
     }
@@ -111,15 +114,15 @@ class Producto
     {
         $resp = false;
         $base = new BaseDatos();
-        $sql = "UPDATE producto SET idproducto='" . $this->getIdProducto() . "', pronombre='" . $this->getProNombre() . "', prodetalle='" . $this->getProDetalle() . "', procantstock='" . $this->getProStock() . "' WHERE idproducto=" . $this->getIdProducto();
+        $sql = "UPDATE producto SET idproducto='" . $this->getIdProducto() . "', pronombre='" . $this->getProNombre() . "', prodetalle='" . $this->getProDetalle() . "', procantstock='" . $this->getProStock() . "' WHERE idproducto='" . $this->getIdProducto() . "'";
         if ($base->Iniciar()) {
             if ($base->Ejecutar($sql)) {
                 $resp = true;
             } else {
-                $this->setmensajeoperacion("Tabla->modificar: " . $base->getError());
+                $this->setmensajeoperacion("Producto->modificar: " . $base->getError());
             }
         } else {
-            $this->setmensajeoperacion("Tabla->modificar: " . $base->getError());
+            $this->setmensajeoperacion("Producto->modificar: " . $base->getError());
         }
         return $resp;
     }
@@ -133,10 +136,10 @@ class Producto
             if ($base->Ejecutar($sql)) {
                 return true;
             } else {
-                $this->setmensajeoperacion("Tabla->eliminar: " . $base->getError());
+                $this->setmensajeoperacion("Producto->eliminar: " . $base->getError());
             }
         } else {
-            $this->setmensajeoperacion("Tabla->eliminar: " . $base->getError());
+            $this->setmensajeoperacion("Producto->eliminar: " . $base->getError());
         }
         return $resp;
     }
@@ -160,7 +163,7 @@ class Producto
                 }
             }
         } else {
-            $this->setmensajeoperacion("Tabla->listar: " . $base->getError());
+            $this->setmensajeoperacion("Producto->listar: " . $base->getError());
         }
 
         return $arreglo;

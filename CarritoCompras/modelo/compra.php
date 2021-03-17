@@ -1,4 +1,5 @@
 <?php
+
 class Compra
 {
     private $idcompra;
@@ -78,10 +79,11 @@ class Compra
                     }
 
                     $this->setear($row['idcompra'], $row['cofecha'], $objUsuario);
+                    $resp = true;
                 }
             }
         } else {
-            $this->setmensajeoperacion("Tabla->listar: " . $base->getError());
+            $this->setmensajeoperacion("Compra->listar: " . $base->getError());
         }
         return $resp;
     }
@@ -90,16 +92,16 @@ class Compra
     {
         $resp = false;
         $base = new BaseDatos();
-        $sql = "INSERT INTO compra(cofecha, idusuario)  VALUES('" . $this->getCoFecha() . "','" . $this->getIdUsuario() . "');";
+        $sql = "INSERT INTO compra (cofecha, idusuario) VALUES ('{$this->getCoFecha()}','{$this->getIdUsuario()->getIdUsuario()}');";
         if ($base->Iniciar()) {
             if ($elid = $base->Ejecutar($sql)) {
                 $this->setIdCompra($elid);
                 $resp = true;
             } else {
-                $this->setmensajeoperacion("Tabla->insertar: " . $base->getError());
+                $this->setmensajeoperacion("Compra->insertar: " . $base->getError());
             }
         } else {
-            $this->setmensajeoperacion("Tabla->insertar: " . $base->getError());
+            $this->setmensajeoperacion("Compra->insertar: " . $base->getError());
         }
         return $resp;
     }
@@ -108,15 +110,15 @@ class Compra
     {
         $resp = false;
         $base = new BaseDatos();
-        $sql = "UPDATE compra SET idcompra='" . $this->getIdCompra() . "', cofecha='" . $this->getCoFecha() . "', idusuario='" . $this->getIdUsuario() . "' WHERE idcompra=" . $this->getIdCompra();
+        $sql = "UPDATE compra SET idcompra='{$this->getIdCompra()}', cofecha='{$this->getCoFecha()}', idusuario='{$this->getIdUsuario()->getIdUsuario()}' WHERE idcompra='{$this->getIdCompra()}'";
         if ($base->Iniciar()) {
             if ($base->Ejecutar($sql)) {
                 $resp = true;
             } else {
-                $this->setmensajeoperacion("Tabla->modificar: " . $base->getError());
+                $this->setmensajeoperacion("Compra->modificar: " . $base->getError());
             }
         } else {
-            $this->setmensajeoperacion("Tabla->modificar: " . $base->getError());
+            $this->setmensajeoperacion("Compra->modificar: " . $base->getError());
         }
         return $resp;
     }
@@ -130,10 +132,10 @@ class Compra
             if ($base->Ejecutar($sql)) {
                 return true;
             } else {
-                $this->setmensajeoperacion("Tabla->eliminar: " . $base->getError());
+                $this->setmensajeoperacion("Compra->eliminar: " . $base->getError());
             }
         } else {
-            $this->setmensajeoperacion("Tabla->eliminar: " . $base->getError());
+            $this->setmensajeoperacion("Compra->eliminar: " . $base->getError());
         }
         return $resp;
     }
@@ -165,7 +167,7 @@ class Compra
                 }
             }
         } else {
-            $this->setmensajeoperacion("Tabla->listar: " . $base->getError());
+            $this->setmensajeoperacion("Compra->listar: " . $base->getError());
         }
 
         return $arreglo;

@@ -53,7 +53,7 @@ class MenuRol
     {
         $resp = false;
         $base = new BaseDatos();
-        $sql = "SELECT * FROM usuariorol WHERE idmenu = " . $this->getIdMenu() . " and idrol = " . $this->getIdRol();
+        $sql = "SELECT * FROM menurol WHERE idmenu = " . $this->getIdMenu()->getIdMenu() . " and idrol = " . $this->getIdRol()->getIdRol();
         if ($base->Iniciar()) {
             $res = $base->Ejecutar($sql);
             if ($res > -1) {
@@ -75,10 +75,11 @@ class MenuRol
                     }
 
                     $this->setear($objMenu, $objRol);
+                    $resp = true;
                 }
             }
         } else {
-            $this->setmensajeoperacion("Tabla->listar: " . $base->getError());
+            $this->setmensajeoperacion("MenuRol->listar: " . $base->getError());
         }
         return $resp;
     }
@@ -87,15 +88,15 @@ class MenuRol
     {
         $resp = false;
         $base = new BaseDatos();
-        $sql = "INSERT INTO usuariorol(idmenu, idrol)  VALUES('" . $this->getIdMenu()->getIdMenu() . "', '" . $this->getIdRol()->getIdRol() . "');";
+        $sql = "INSERT INTO menurol (idmenu, idrol) VALUES ('{$this->getIdMenu()->getIdMenu()}', '{$this->getIdRol()->getIdRol()}');";
         if ($base->Iniciar()) {
             if ($base->Ejecutar($sql)) {
                 $resp = true;
             } else {
-                $this->setmensajeoperacion("Tabla->insertar: " . $base->getError());
+                $this->setmensajeoperacion("MenuRol->insertar: " . $base->getError());
             }
         } else {
-            $this->setmensajeoperacion("Tabla->insertar: " . $base->getError());
+            $this->setmensajeoperacion("MenuRol->insertar: " . $base->getError());
         }
         return $resp;
     }
@@ -105,15 +106,15 @@ class MenuRol
     {
         $resp = false;
         $base = new BaseDatos();
-        $sql = "DELETE * FROM usuariorol WHERE idmenu = " . $this->getIdMenu() . " and idrol = " . $this->getIdRol();
+        $sql = "DELETE * FROM menurol WHERE idmenu = " . $this->getIdMenu()->getIdMenu() . " and idrol = " . $this->getIdRol()->getIdRol();
         if ($base->Iniciar()) {
             if ($base->Ejecutar($sql)) {
                 return true;
             } else {
-                $this->setmensajeoperacion("Tabla->eliminar: " . $base->getError());
+                $this->setmensajeoperacion("MenuRol->eliminar: " . $base->getError());
             }
         } else {
-            $this->setmensajeoperacion("Tabla->eliminar: " . $base->getError());
+            $this->setmensajeoperacion("MenuRol->eliminar: " . $base->getError());
         }
         return $resp;
     }
@@ -123,7 +124,7 @@ class MenuRol
     {
         $arreglo = array();
         $base = new BaseDatos();
-        $sql = "SELECT * FROM usuariorol  ";
+        $sql = "SELECT * FROM menurol  ";
         if ($parametro != "") {
             $sql .= 'WHERE ' . $parametro;
         }
@@ -153,7 +154,7 @@ class MenuRol
                 }
             }
         } else {
-            $this->setmensajeoperacion("Tabla->listar: " . $base->getError());
+            $this->setmensajeoperacion("MenuRol->listar: " . $base->getError());
         }
 
         return $arreglo;

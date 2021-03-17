@@ -1,7 +1,7 @@
 <?php
+
 class Rol
 {
-
     private $idrol;
     private $rodescripcion;
     private $mensajeoperacion;
@@ -65,6 +65,7 @@ class Rol
                 if ($res > 0) {
                     $row = $base->Registro();
                     $this->setear($row['idrol'], $row['rodescripcion']);
+                    $resp = true;
                 }
             }
         } else {
@@ -78,10 +79,10 @@ class Rol
     {
         $resp = false;
         $base = new BaseDatos();
-        $sql = "INSERT INTO rol(rodescripcion)  VALUES ('" . $this->getRodescripcion() . "')";
+        $sql = "INSERT INTO rol (rodescripcion) VALUES ('" . $this->getRodescripcion() . "')";
         if ($base->Iniciar()) {
-            if ($elid = $base->Ejecutar($sql)) {
-                $this->setIdrol($elid);
+            if ($base = $base->Ejecutar($sql)) {
+                $this->setIdrol($base);
                 $resp = true;
             } else {
 

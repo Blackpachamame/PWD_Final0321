@@ -1,4 +1,5 @@
 <?php
+
 class CompraEstado
 {
     private $idcompraestado;
@@ -108,10 +109,11 @@ class CompraEstado
                     }
 
                     $this->setear($row['idcompraestado'], $objCompra, $objCompraEstadoTipo, $row['cefechaini'], $row['cefechafin']);
+                    $resp = true;
                 }
             }
         } else {
-            $this->setmensajeoperacion("Tabla->listar: " . $base->getError());
+            $this->setmensajeoperacion("CompraEstado->listar: " . $base->getError());
         }
         return $resp;
     }
@@ -120,16 +122,16 @@ class CompraEstado
     {
         $resp = false;
         $base = new BaseDatos();
-        $sql = "INSERT INTO compraestado(idcompra, idcompraestadotipo, cefechaini, cefechafin)  VALUES('" . $this->getIdCompra() . "','" . $this->getIdCompraEstadoTipo() . "','" . $this->getCeFechaIni() . "','" . $this->getCeFechaFin() . "');";
+        $sql = "INSERT INTO compraestado (idcompra, idcompraestadotipo, cefechaini, cefechafin) VALUES ('{$this->getIdCompra()->getIdCompra()}','{$this->getIdCompraEstadoTipo()->getIdCompraEstadoTipo()},'{$this->getCeFechaIni()}','{$this->getCeFechaFin()}');";
         if ($base->Iniciar()) {
-            if ($elid = $base->Ejecutar($sql)) {
-                $this->setIdCompraEstado($elid);
+            if ($base = $base->Ejecutar($sql)) {
+                $this->setIdCompraEstado($base);
                 $resp = true;
             } else {
-                $this->setmensajeoperacion("Tabla->insertar: " . $base->getError());
+                $this->setmensajeoperacion("CompraEstado->insertar: " . $base->getError());
             }
         } else {
-            $this->setmensajeoperacion("Tabla->insertar: " . $base->getError());
+            $this->setmensajeoperacion("CompraEstado->insertar: " . $base->getError());
         }
         return $resp;
     }
@@ -138,15 +140,15 @@ class CompraEstado
     {
         $resp = false;
         $base = new BaseDatos();
-        $sql = "UPDATE compraestado SET idcompraestado='" . $this->getIdCompraEstado() . "', idcompra='" . $this->getIdCompra() . "', idcompraestadotipo='" . $this->getIdCompraEstadoTipo() . "', cefechaini='" . $this->getCeFechaIni() . "', cefechafin='" . $this->getCeFechaFin() . "' WHERE idcompraestado=" . $this->getIdCompraEstado();
+        $sql = "UPDATE compraestado SET idcompraestado='{$this->getIdCompraEstado()}', idcompra='{$this->getIdCompra()->getIdCompra()}', idcompraestadotipo='{$this->getIdCompraEstadoTipo()->getIdCompraEstadoTipo()}', cefechaini='{$this->getCeFechaIni()}', cefechafin='{$this->getCeFechaFin()}' WHERE idcompraestado='{$this->getIdCompraEstado()}'";
         if ($base->Iniciar()) {
             if ($base->Ejecutar($sql)) {
                 $resp = true;
             } else {
-                $this->setmensajeoperacion("Tabla->modificar: " . $base->getError());
+                $this->setmensajeoperacion("CompraEstado->modificar: " . $base->getError());
             }
         } else {
-            $this->setmensajeoperacion("Tabla->modificar: " . $base->getError());
+            $this->setmensajeoperacion("CompraEstado->modificar: " . $base->getError());
         }
         return $resp;
     }
@@ -160,10 +162,10 @@ class CompraEstado
             if ($base->Ejecutar($sql)) {
                 return true;
             } else {
-                $this->setmensajeoperacion("Tabla->eliminar: " . $base->getError());
+                $this->setmensajeoperacion("CompraEstado->eliminar: " . $base->getError());
             }
         } else {
-            $this->setmensajeoperacion("Tabla->eliminar: " . $base->getError());
+            $this->setmensajeoperacion("CompraEstado->eliminar: " . $base->getError());
         }
         return $resp;
     }
@@ -201,7 +203,7 @@ class CompraEstado
                 }
             }
         } else {
-            $this->setmensajeoperacion("Tabla->listar: " . $base->getError());
+            $this->setmensajeoperacion("CompraEstado->listar: " . $base->getError());
         }
 
         return $arreglo;

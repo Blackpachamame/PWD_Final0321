@@ -1,4 +1,5 @@
 <?php
+
 class Menu
 {
     private $idmenu;
@@ -19,6 +20,7 @@ class Menu
         $this->medeshabilitado = "";
         $this->mensajeoperacion = "";
     }
+
     public function setear($idmenu, $menombre, $medescripcion, $idpadre, $medeshabilitado)
     {
         $this->setIdMenu($idmenu);
@@ -94,10 +96,11 @@ class Menu
                 if ($res > 0) {
                     $row = $base->Registro();
                     $this->setear($row['idmenu'], $row['menombre'], $row['medescripcion'], $row['idpadre'], $row['medeshabilitado']);
+                    $resp = true;
                 }
             }
         } else {
-            $this->setmensajeoperacion("Tabla->listar: " . $base->getError());
+            $this->setmensajeoperacion("Menu->listar: " . $base->getError());
         }
         return $resp;
     }
@@ -106,16 +109,16 @@ class Menu
     {
         $resp = false;
         $base = new BaseDatos();
-        $sql = "INSERT INTO menu(menombre, medescripcion, idpadre, medeshabilitado)  VALUES('" . $this->getMeNombre() . "','" . $this->getMeDescripcion() . "','" . $this->getIdPadre() . "','" . $this->getMeDeshabilitado() . "');";
+        $sql = "INSERT INTO menu (menombre, medescripcion, idpadre, medeshabilitado) VALUES ('" . $this->getMeNombre() . "','" . $this->getMeDescripcion() . "','" . $this->getIdPadre() . "','" . $this->getMeDeshabilitado() . "');";
         if ($base->Iniciar()) {
-            if ($elid = $base->Ejecutar($sql)) {
-                $this->setIdMenu($elid);
+            if ($base = $base->Ejecutar($sql)) {
+                $this->setIdMenu($base);
                 $resp = true;
             } else {
-                $this->setmensajeoperacion("Tabla->insertar: " . $base->getError());
+                $this->setmensajeoperacion("Menu->insertar: " . $base->getError());
             }
         } else {
-            $this->setmensajeoperacion("Tabla->insertar: " . $base->getError());
+            $this->setmensajeoperacion("Menu->insertar: " . $base->getError());
         }
         return $resp;
     }
@@ -124,15 +127,15 @@ class Menu
     {
         $resp = false;
         $base = new BaseDatos();
-        $sql = "UPDATE menu SET idmenu='" . $this->getIdMenu() . "', menombre='" . $this->getMeNombre() . "', medescripcion='" . $this->getMeDescripcion() . "', idpadre='" . $this->getIdPadre() . "', medeshabilitado='" . $this->getMeDeshabilitado() . "' WHERE idmenu=" . $this->getIdMenu();
+        $sql = "UPDATE menu SET idmenu='" . $this->getIdMenu() . "', menombre='" . $this->getMeNombre() . "', medescripcion='" . $this->getMeDescripcion() . "', idpadre='" . $this->getIdPadre() . "', medeshabilitado='" . $this->getMeDeshabilitado() . "' WHERE idmenu='" . $this->getIdMenu() . "'";
         if ($base->Iniciar()) {
             if ($base->Ejecutar($sql)) {
                 $resp = true;
             } else {
-                $this->setmensajeoperacion("Tabla->modificar: " . $base->getError());
+                $this->setmensajeoperacion("Menu->modificar: " . $base->getError());
             }
         } else {
-            $this->setmensajeoperacion("Tabla->modificar: " . $base->getError());
+            $this->setmensajeoperacion("Menu->modificar: " . $base->getError());
         }
         return $resp;
     }
@@ -146,10 +149,10 @@ class Menu
             if ($base->Ejecutar($sql)) {
                 return true;
             } else {
-                $this->setmensajeoperacion("Tabla->eliminar: " . $base->getError());
+                $this->setmensajeoperacion("Menu->eliminar: " . $base->getError());
             }
         } else {
-            $this->setmensajeoperacion("Tabla->eliminar: " . $base->getError());
+            $this->setmensajeoperacion("Menu->eliminar: " . $base->getError());
         }
         return $resp;
     }
@@ -173,7 +176,7 @@ class Menu
                 }
             }
         } else {
-            $this->setmensajeoperacion("Tabla->listar: " . $base->getError());
+            $this->setmensajeoperacion("Menu->listar: " . $base->getError());
         }
 
         return $arreglo;

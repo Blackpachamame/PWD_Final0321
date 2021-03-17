@@ -20,7 +20,7 @@ class UsuarioRol
         $this->setIdRol($idrol);
     }
 
-    public function getIdUsuario()
+    public function getUsuario()
     {
         return $this->idusuario;
     }
@@ -53,7 +53,7 @@ class UsuarioRol
     {
         $resp = false;
         $base = new BaseDatos();
-        $sql = "SELECT * FROM usuariorol WHERE idusuario = " . $this->getIdUsuario() . " and idrol = " . $this->getIdRol();
+        $sql = "SELECT * FROM usuariorol WHERE idusuario = " . $this->getUsuario()->getIdUsuario() . " and idrol = " . $this->getIdRol()->getIdRol();
         if ($base->Iniciar()) {
             $res = $base->Ejecutar($sql);
             if ($res > -1) {
@@ -75,10 +75,11 @@ class UsuarioRol
                     }
 
                     $this->setear($objUsuario, $objRol);
+                    $resp = true;
                 }
             }
         } else {
-            $this->setmensajeoperacion("Tabla->listar: " . $base->getError());
+            $this->setmensajeoperacion("Usuariorol->listar: " . $base->getError());
         }
         return $resp;
     }
@@ -87,15 +88,15 @@ class UsuarioRol
     {
         $resp = false;
         $base = new BaseDatos();
-        $sql = "INSERT INTO usuariorol(idusuario, idrol)  VALUES('" . $this->getIdUsuario()->getIdUsuario() . "', '" . $this->getIdRol()->getIdRol() . "');";
+        $sql = "INSERT INTO usuariorol (idusuario, idrol) VALUES ('{$this->getUsuario()->getIdUsuario()}', '{$this->getIdRol()->getIdRol()}');";
         if ($base->Iniciar()) {
             if ($base->Ejecutar($sql)) {
                 $resp = true;
             } else {
-                $this->setmensajeoperacion("Tabla->insertar: " . $base->getError());
+                $this->setmensajeoperacion("Usuariorol->insertar: " . $base->getError());
             }
         } else {
-            $this->setmensajeoperacion("Tabla->insertar: " . $base->getError());
+            $this->setmensajeoperacion("Usuariorol->insertar: " . $base->getError());
         }
         return $resp;
     }
@@ -105,15 +106,15 @@ class UsuarioRol
     {
         $resp = false;
         $base = new BaseDatos();
-        $sql = "DELETE * FROM usuariorol WHERE idusuario = " . $this->getIdUsuario() . " and idrol = " . $this->getIdRol();
+        $sql = "DELETE * FROM usuariorol WHERE idusuario = " . $this->getUsuario()->getIdUsuario() . " and idrol = " . $this->getIdRol()->getIdRol();
         if ($base->Iniciar()) {
             if ($base->Ejecutar($sql)) {
                 return true;
             } else {
-                $this->setmensajeoperacion("Tabla->eliminar: " . $base->getError());
+                $this->setmensajeoperacion("Usuariorol->eliminar: " . $base->getError());
             }
         } else {
-            $this->setmensajeoperacion("Tabla->eliminar: " . $base->getError());
+            $this->setmensajeoperacion("Usuariorol->eliminar: " . $base->getError());
         }
         return $resp;
     }
@@ -153,7 +154,7 @@ class UsuarioRol
                 }
             }
         } else {
-            $this->setmensajeoperacion("Tabla->listar: " . $base->getError());
+            $this->setmensajeoperacion("Usuariorol->listar: " . $base->getError());
         }
 
         return $arreglo;

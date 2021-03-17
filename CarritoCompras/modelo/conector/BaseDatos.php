@@ -1,7 +1,7 @@
 <?php
+
 class BaseDatos extends PDO
 {
-
     private $engine;
     private $host;
     private $database;
@@ -44,16 +44,10 @@ class BaseDatos extends PDO
         return $this->getConec();
     }
 
-
-
-
     public function getConec()
     {
         return $this->conec;
     }
-
-
-
 
     public function setDebug($debug)
     {
@@ -70,7 +64,6 @@ class BaseDatos extends PDO
      */
     public function setError($e)
     {
-
         $this->error = $e;
     }
 
@@ -199,7 +192,6 @@ class BaseDatos extends PDO
                 $this->setIndice(-1);
             }
         }
-
         return $filaActual;
     }
 
@@ -232,7 +224,6 @@ class BaseDatos extends PDO
     }
     private function getResultado()
     {
-
         return $this->resultado;
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 class CompraItem
 {
     private $idcompraitem;
@@ -16,19 +17,20 @@ class CompraItem
         $this->cicantidad = "";
         $this->mensajeoperacion = "";
     }
+
     public function setear($idcompraitem, $idproducto, $idcompra, $cicantidad)
     {
-        $this->setIdeCompraItem($idcompraitem);
+        $this->setIdCompraItem($idcompraitem);
         $this->setIdProducto($idproducto);
-        $this->setIdeCompra($idcompra);
+        $this->setIdCompra($idcompra);
         $this->setCiCantidad($cicantidad);
     }
 
-    public function getIdeCompraItem()
+    public function getIdCompraItem()
     {
         return $this->idcompraitem;
     }
-    public function setIdeCompraItem($idcompraitem)
+    public function setIdCompraItem($idcompraitem)
     {
         $this->idcompraitem = $idcompraitem;
     }
@@ -42,11 +44,11 @@ class CompraItem
         $this->idproducto = $idproducto;
     }
 
-    public function getIdeCompra()
+    public function getIdCompra()
     {
         return $this->idcompra;
     }
-    public function setIdeCompra($idcompra)
+    public function setIdCompra($idcompra)
     {
         $this->idcompra = $idcompra;
     }
@@ -73,7 +75,7 @@ class CompraItem
     {
         $resp = false;
         $base = new BaseDatos();
-        $sql = "SELECT * FROM compraitem WHERE idcompraitem = " . $this->getIdeCompraItem();
+        $sql = "SELECT * FROM compraitem WHERE idcompraitem = " . $this->getIdCompraItem();
         if ($base->Iniciar()) {
             $res = $base->Ejecutar($sql);
             if ($res > -1) {
@@ -93,12 +95,12 @@ class CompraItem
                         $objCompra->cargar();
                     }
 
-
                     $this->setear($row['idcompraitem'], $objProducto, $objCompra, $row['cicantidad']);
+                    $resp = true;
                 }
             }
         } else {
-            $this->setmensajeoperacion("Tabla->listar: " . $base->getError());
+            $this->setmensajeoperacion("CompraItem->listar: " . $base->getError());
         }
         return $resp;
     }
@@ -107,16 +109,16 @@ class CompraItem
     {
         $resp = false;
         $base = new BaseDatos();
-        $sql = "INSERT INTO compraitem(idproducto, idcompra, cicantidad)  VALUES('" . $this->getIdProducto() . "','" . $this->getIdeCompra() . "','" . $this->getCiCantidad() . "');";
+        $sql = "INSERT INTO compraitem (idproducto, idcompra, cicantidad) VALUES ('{$this->getIdProducto()->getIdProducto()}','{$this->getIdCompra()->getIdCompra()}','{$this->getCiCantidad()}');";
         if ($base->Iniciar()) {
-            if ($elid = $base->Ejecutar($sql)) {
-                $this->setIdeCompraItem($elid);
+            if ($base = $base->Ejecutar($sql)) {
+                $this->setIdCompraItem($base);
                 $resp = true;
             } else {
-                $this->setmensajeoperacion("Tabla->insertar: " . $base->getError());
+                $this->setmensajeoperacion("CompraItem->insertar: " . $base->getError());
             }
         } else {
-            $this->setmensajeoperacion("Tabla->insertar: " . $base->getError());
+            $this->setmensajeoperacion("CompraItem->insertar: " . $base->getError());
         }
         return $resp;
     }
@@ -125,15 +127,15 @@ class CompraItem
     {
         $resp = false;
         $base = new BaseDatos();
-        $sql = "UPDATE compraitem SET idcompraitem='" . $this->getIdeCompraItem() . "', idproducto='" . $this->getIdProducto() . "', idcompra='" . $this->getIdeCompra() . "', cicantidad='" . $this->getCiCantidad() . "' WHERE idcompraitem=" . $this->getIdeCompraItem();
+        $sql = "UPDATE compraitem SET idcompraitem='{$this->getIdCompraItem()}', idproducto='{$this->getIdProducto()->getIdProducto()}', idcompra='{$this->getIdCompra()->getIdCompra()}', cicantidad='{$this->getCiCantidad()}' WHERE idcompraitem='{$this->getIdCompraItem()}'";
         if ($base->Iniciar()) {
             if ($base->Ejecutar($sql)) {
                 $resp = true;
             } else {
-                $this->setmensajeoperacion("Tabla->modificar: " . $base->getError());
+                $this->setmensajeoperacion("CompraItem->modificar: " . $base->getError());
             }
         } else {
-            $this->setmensajeoperacion("Tabla->modificar: " . $base->getError());
+            $this->setmensajeoperacion("CompraItem->modificar: " . $base->getError());
         }
         return $resp;
     }
@@ -142,15 +144,15 @@ class CompraItem
     {
         $resp = false;
         $base = new BaseDatos();
-        $sql = "DELETE FROM compraitem WHERE idcompraitem=" . $this->getIdeCompraItem();
+        $sql = "DELETE FROM compraitem WHERE idcompraitem=" . $this->getIdCompraItem();
         if ($base->Iniciar()) {
             if ($base->Ejecutar($sql)) {
                 return true;
             } else {
-                $this->setmensajeoperacion("Tabla->eliminar: " . $base->getError());
+                $this->setmensajeoperacion("CompraItem->eliminar: " . $base->getError());
             }
         } else {
-            $this->setmensajeoperacion("Tabla->eliminar: " . $base->getError());
+            $this->setmensajeoperacion("CompraItem->eliminar: " . $base->getError());
         }
         return $resp;
     }
@@ -188,7 +190,7 @@ class CompraItem
                 }
             }
         } else {
-            $this->setmensajeoperacion("Tabla->listar: " . $base->getError());
+            $this->setmensajeoperacion("CompraItem->listar: " . $base->getError());
         }
 
         return $arreglo;

@@ -1,4 +1,5 @@
 <?php
+
 class CompraEstadoTipo
 {
     private $idcompraestadotipo;
@@ -14,6 +15,7 @@ class CompraEstadoTipo
         $this->cetdetalle = "";
         $this->mensajeoperacion = "";
     }
+
     public function setear($idcompraestadotipo, $cetdescripcion, $cetdetalle)
     {
         $this->setIdCompraEstadoTipo($idcompraestadotipo);
@@ -21,7 +23,7 @@ class CompraEstadoTipo
         $this->setCetDetalle($cetdetalle);
     }
 
-    public function getCompraEstadoTipo()
+    public function getIdCompraEstadoTipo()
     {
         return $this->idcompraestadotipo;
     }
@@ -62,17 +64,18 @@ class CompraEstadoTipo
     {
         $resp = false;
         $base = new BaseDatos();
-        $sql = "SELECT * FROM compraestadotipo WHERE idcompraestadotipo = " . $this->getCompraEstadoTipo();
+        $sql = "SELECT * FROM compraestadotipo WHERE idcompraestadotipo = " . $this->getIdCompraEstadoTipo();
         if ($base->Iniciar()) {
             $res = $base->Ejecutar($sql);
             if ($res > -1) {
                 if ($res > 0) {
                     $row = $base->Registro();
                     $this->setear($row['idcompraestadotipo'], $row['cetdescripcion'], $row['cetdetalle']);
+                    $resp = true;
                 }
             }
         } else {
-            $this->setmensajeoperacion("Tabla->listar: " . $base->getError());
+            $this->setmensajeoperacion("CompraEstadoTipo->listar: " . $base->getError());
         }
         return $resp;
     }
@@ -81,16 +84,16 @@ class CompraEstadoTipo
     {
         $resp = false;
         $base = new BaseDatos();
-        $sql = "INSERT INTO compraestadotipo(cetdescripcion, cetdetalle)  VALUES('" . $this->getCetDescripcion() . "','" . $this->getCetDetalle() . "');";
+        $sql = "INSERT INTO compraestadotipo (cetdescripcion, cetdetalle) VALUES ('" . $this->getCetDescripcion() . "','" . $this->getCetDetalle() . "');";
         if ($base->Iniciar()) {
-            if ($elid = $base->Ejecutar($sql)) {
-                $this->setIdCompraEstadoTipo($elid);
+            if ($base = $base->Ejecutar($sql)) {
+                $this->setIdCompraEstadoTipo($base);
                 $resp = true;
             } else {
-                $this->setmensajeoperacion("Tabla->insertar: " . $base->getError());
+                $this->setmensajeoperacion("CompraEstadoTipo->insertar: " . $base->getError());
             }
         } else {
-            $this->setmensajeoperacion("Tabla->insertar: " . $base->getError());
+            $this->setmensajeoperacion("CompraEstadoTipo->insertar: " . $base->getError());
         }
         return $resp;
     }
@@ -99,15 +102,15 @@ class CompraEstadoTipo
     {
         $resp = false;
         $base = new BaseDatos();
-        $sql = "UPDATE compraestadotipo SET idcompraestadotipo='" . $this->getCompraEstadoTipo() . "', cetdescripcion='" . $this->getCetDescripcion() . "', cetdetalle='" . $this->getCetDetalle() . "' WHERE idcompraestadotipo=" . $this->getCompraEstadoTipo();
+        $sql = "UPDATE compraestadotipo SET idcompraestadotipo='" . $this->getIdCompraEstadoTipo() . "', cetdescripcion='" . $this->getCetDescripcion() . "', cetdetalle='" . $this->getCetDetalle() . "' WHERE idcompraestadotipo='" . $this->getIdCompraEstadoTipo() . "'";
         if ($base->Iniciar()) {
             if ($base->Ejecutar($sql)) {
                 $resp = true;
             } else {
-                $this->setmensajeoperacion("Tabla->modificar: " . $base->getError());
+                $this->setmensajeoperacion("CompraEstadoTipo->modificar: " . $base->getError());
             }
         } else {
-            $this->setmensajeoperacion("Tabla->modificar: " . $base->getError());
+            $this->setmensajeoperacion("CompraEstadoTipo->modificar: " . $base->getError());
         }
         return $resp;
     }
@@ -116,15 +119,15 @@ class CompraEstadoTipo
     {
         $resp = false;
         $base = new BaseDatos();
-        $sql = "DELETE FROM compraestadotipo WHERE idcompraestadotipo=" . $this->getCompraEstadoTipo();
+        $sql = "DELETE FROM compraestadotipo WHERE idcompraestadotipo=" . $this->getIdCompraEstadoTipo();
         if ($base->Iniciar()) {
             if ($base->Ejecutar($sql)) {
                 return true;
             } else {
-                $this->setmensajeoperacion("Tabla->eliminar: " . $base->getError());
+                $this->setmensajeoperacion("CompraEstadoTipo->eliminar: " . $base->getError());
             }
         } else {
-            $this->setmensajeoperacion("Tabla->eliminar: " . $base->getError());
+            $this->setmensajeoperacion("CompraEstadoTipo->eliminar: " . $base->getError());
         }
         return $resp;
     }
@@ -148,7 +151,7 @@ class CompraEstadoTipo
                 }
             }
         } else {
-            $this->setmensajeoperacion("Tabla->listar: " . $base->getError());
+            $this->setmensajeoperacion("CompraEstadoTipo->listar: " . $base->getError());
         }
 
         return $arreglo;
