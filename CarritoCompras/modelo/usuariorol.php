@@ -20,7 +20,7 @@ class UsuarioRol
         $this->setIdRol($idrol);
     }
 
-    public function getUsuario()
+    public function getIdUsuario()
     {
         return $this->idusuario;
     }
@@ -29,7 +29,7 @@ class UsuarioRol
         $this->idusuario = $idusuario;
     }
 
-    public function getIdRol()
+    public function getIdrol()
     {
         return $this->idrol;
     }
@@ -53,7 +53,7 @@ class UsuarioRol
     {
         $resp = false;
         $base = new BaseDatos();
-        $sql = "SELECT * FROM usuariorol WHERE idusuario = " . $this->getUsuario()->getIdUsuario() . " and idrol = " . $this->getIdRol()->getIdRol();
+        $sql = "SELECT * FROM usuariorol WHERE idusuario = " . $this->getIdUsuario()->getIdUsuario() . " and idrol = " . $this->getIdrol()->getIdrol();
         if ($base->Iniciar()) {
             $res = $base->Ejecutar($sql);
             if ($res > -1) {
@@ -88,7 +88,7 @@ class UsuarioRol
     {
         $resp = false;
         $base = new BaseDatos();
-        $sql = "INSERT INTO usuariorol (idusuario, idrol) VALUES ('{$this->getUsuario()->getIdUsuario()}', '{$this->getIdRol()->getIdRol()}');";
+        $sql = "INSERT INTO usuariorol (idusuario, idrol) VALUES ('{$this->getIdUsuario()->getIdUsuario()}', '{$this->getIdrol()->getIdrol()}');";
         if ($base->Iniciar()) {
             if ($base->Ejecutar($sql)) {
                 $resp = true;
@@ -106,7 +106,7 @@ class UsuarioRol
     {
         $resp = false;
         $base = new BaseDatos();
-        $sql = "DELETE * FROM usuariorol WHERE idusuario = " . $this->getUsuario()->getIdUsuario() . " and idrol = " . $this->getIdRol()->getIdRol();
+        $sql = "DELETE * FROM usuariorol WHERE idusuario = " . $this->getIdUsuario()->getIdUsuario() . " and idrol = " . $this->getIdrol()->getIdrol();
         if ($base->Iniciar()) {
             if ($base->Ejecutar($sql)) {
                 return true;

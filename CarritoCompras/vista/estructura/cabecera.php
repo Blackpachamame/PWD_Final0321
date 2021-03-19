@@ -33,12 +33,12 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item mx-1">
-                        <a class="nav-link" role="button" aria-haspopup="true" aria-expanded="false" href="home.php">
+                        <a class="nav-link" role="button" aria-haspopup="true" aria-expanded="false" href="../index/home.php">
                             <span class="bi bi-house-door-fill fa-fw d-lg-none d-xl-none" aria-hidden="true"></span>
                             <span>Home</span></a>
                     </li>
                     <li class="nav-item mx-1">
-                        <a class="nav-link" aria-current="page" href="contacto.php">
+                        <a class="nav-link" aria-current="page" href="../index/contacto.php">
                             <span class="fas fa-info-circle fa-fw d-lg-none d-xl-none" aria-hidden="true"></span>
                             <span>Contacto</span></a>
                     </li>
@@ -49,30 +49,30 @@
                 <ul class="navbar-nav">
                     <!-- Icon carrito -->
                     <li class="nav-item mx-1">
-                        <a class="nav-link" href="#" role="button" aria-haspopup="true" aria-expanded="false"><span class="fas fa-shopping-cart"></span>
+                        <a class="nav-link" href="../index/carrito.php" role="button" aria-haspopup="true" aria-expanded="false"><span class="fas fa-shopping-cart"></span>
                             <span class="d-lg-none">Carrito</span></a>
                     </li>
                     <!-- Icon visitante -->
                     <li class="nav-item mx-1 dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                             <span class="fas fa-user-times fa-fw" aria-hidden="true"></span> <span class="d-lg-none">Usuario</span>
                         </a>
 
                         <div class="dropdown-menu dropdown-menu-right">
-                            <a class="dropdown-item" href="/login"><span class="fas fa-sign-in-alt fa-fw" aria-hidden="true" title="Log in"></span> Login</a>
-                            <a class="dropdown-item" href="/signup"><span class="fas fa-pencil-alt fa-fw" aria-hidden="true" title="Sign up"></span> Registrarse</a>
+                            <a class="dropdown-item" href="../index/login.php"><span class="fas fa-sign-in-alt fa-fw" aria-hidden="true" title="Log in"></span> Login</a>
+                            <a class="dropdown-item" href="../index/registrar.php"><span class="fas fa-pencil-alt fa-fw" aria-hidden="true" title="Sign up"></span> Registrarse</a>
                         </div>
                     </li>
                     <!-- Icon usuario -->
                     <li class="nav-item mx-1 dropdown">
-                        <a href="/usuario.php" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                             <span class="fas fa-user fa-fw" aria-hidden="true"></span> <span class="d-lg-none" style="color: #06f">Usuario</span>
                         </a>
 
                         <div class="dropdown-menu dropdown-menu-right">
-                            <a class="dropdown-item" href="/usuario">
+                            <a class="dropdown-item" href="../index/perfil.php">
                                 <span class="fas fa-user fa-fw" aria-hidden="true" title="Perfil"></span> Perfil </a>
-                            <a class="dropdown-item" href="/settings"><span class="fas fa-cog fa-fw " aria-hidden="true" title="Configuración"></span> Configuración</a>
+                            <a class="dropdown-item" href="../index/configuracion.php"><span class="fas fa-cog fa-fw " aria-hidden="true" title="Configuración"></span> Configuración</a>
 
                             <div class="dropdown-divider"></div>
 

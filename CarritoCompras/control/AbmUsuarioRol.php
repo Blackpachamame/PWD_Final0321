@@ -1,178 +1,148 @@
-<?php 
-class Usuariorol {
-/*-----------ATRIBUTOS----------------------*/
-    private $idusuario;//obj usuario
-    private $idrol;//obj rol
-    private $mensajeoperacion;
-/*-------------CONSTRUCTOR-------------------*/   
-    public function __construct(){
-        
-        $this->idusuario=new Usuario();
-        $this->idrol=new Rol();
-        $this->mensajeoperacion ="";
-    }
-   
-/*------------------METODOS GETTERS --------------------*/
+<?php
+class AbmUsuarioRol
+{
     /**
-     * @return string
+     * Espera como parametro un arreglo asociativo donde las claves coinciden 
+     * con los nombres de las variables instancias del objeto
+     * @param array $param
+     * @return UsuarioRol
      */
-    public function getOBJusuario()
+    private function cargarObjeto($param)
     {
-        return $this->idusuario;
-    }
+        $obj = null;
 
-    /**
-     * @return string
-     */
-    public function getOBJrol()
-    {
-        return $this->idrol;
-    }
+        if (array_key_exists('idusuario', $param) and array_key_exists('idrol', $param)) {
 
-     /**
-     * @return string
-     */
-    public function getMensajeoperacion()
-    {
-        return $this->mensajeoperacion;
-    }
-/*---------------------------METODOS SETTERS--------------------------------------*/
-    /**
-     * @param string $patente
-     */
-    public function setOBJusuario($idusuario)
-    {
-        $this->idusuario = $idusuario;
-    }
+            $objusuario = new Usuario();
+            $objusuario->setIdUsuario($param['idusuario']);
+            $objusuario->cargar();
 
-    /**
-     * @param string $marca
-     */
-    public function setOBJrol($idrol)
-    {
-        $this->idrol = $idrol;
-    }
+            $objrol = new Rol();
+            $objrol->setIdrol($param['idrol']);
+            $objrol->cargar();
 
-    /**
-     * @param string $mensajeoperacion
-     */
-    public function setMensajeoperacion($mensajeoperacion)
-    {
-        $this->mensajeoperacion = $mensajeoperacion;
-    }
-
-/*-------------SETEAR CON TODOS LOS DATOS------------------*/
-     public function setear($idusuario,$idrol)    {
-        $this->setOBJusuario($idusuario);
-        $this->setOBJrol($idrol);
-       
+            $obj = new UsuarioRol();
+            $obj->setear($objusuario, $objrol);
         }
-/*----------------------CARGAR -----------------------------*/
-    public function cargar(){
-        $resp = false;
-        $base=new BaseDatos();
-        $sql="SELECT * FROM usuariorol WHERE idusuario = ".$this->getOBJusuario()."and idrol =".$this->getOBJrol();
-        if ($base->Iniciar()) {
-            $res = $base->Ejecutar($sql);
-            if($res>-1){
-                if($res>0){
-                    $row = $base->Registro();
-
-                    $objUsuario= NULL;
-                    if ($row['idsuario'] != null) { 
-                        $objUsuario = new Usuario(); 
-                        $objUsuario->setIdusuario($row['idusuario']); 
-                        $objUsuario->cargar(); }
-                    $objRol= NULL;
-                    if ($row['idrol'] != null) { 
-                        $objRol = new Rol(); 
-                        $objRol->setIdrol($row['idrol']); 
-                        $objRol->cargar(); }
-
-                $this->setear( $row['idusuario'],$row['idrol']);
-                }
-            }  
-        } else {
-            $this->setmensajeoperacion("Usuariorol->listar: ".$base->getError());
-        }
-        return $resp;  
+        return $obj;
     }
 
-/*------------------------INSERTAR----------------------------------------*/
-    public function insertar(){
+    /*---------------- CARGAR SOLO CON LA CLAVE ----------------*/
+    /**
+     * Espera como parametro un arreglo asociativo donde las claves 
+     * coinciden con los nombres de las variables instancias del objeto que son claves
+     * @param array $param
+     * @return UsuarioRol
+     */
+    private function cargarObjetoConClave($param)
+    {
+        $obj = null;
+        if (isset($param['idusuario']) && isset($param['idrol'])) {
+            $obj = new UsuarioRol();
+            $obj->setear(($param['idusuario']), $param['idrol']);
+            $obj->cargar();
+        }
+        return $obj;
+    }
+
+    /*---------------- CHEQUEO CLAVES SETEADAS ----------------*/
+    /**
+     * Corrobora que dentro del arreglo asociativo estan seteados los campos claves
+     * @param array $param
+     * @return boolean
+     */
+    private function seteadosCamposClaves($param)
+    {
         $resp = false;
-        $base=new BaseDatos(); 
-        $sql="INSERT INTO usuariorol (idusuario,idrol)  VALUES ('".$this->getOBjusuario()->getIdusuario()."','".$this->getOBjrol()->getIdrol()."')";
-        if ($base->Iniciar()) {
-            if ($base->Ejecutar($sql)) {
+        if (isset($param['idusuario']) && isset($param['idrol']))
+            $resp = true;
+        return $resp;
+    }
+
+    /*---------------- INSERTAR EN BASE DE DATOS ----------------*/
+    /**
+     * Carga un objeto con los datos pasados por parámetro y lo 
+     * Inserta en la base de datos
+     * @param array $param= idusuario/idrol
+     * @return boolean
+     */
+    public function alta($param)
+    {
+        // print_r($param);
+        $resp = false;
+        //Creo objeto con los datos
+        $elObj = $this->cargarObjeto($param);
+        //print_r($elObjtArchivo);
+        //Verifico que el objeto no sea nulo y lo inserto en BD 
+        if ($elObj != null and $elObj->insertar()) {
+            $resp = true;
+        }
+        return $resp;
+    }
+
+    /*---------------- ELIMINA OBJETO DE BASE DE DATOS ----------------*/
+    /**
+     * Por lo general no se usa ya que se utiliza borrado lógico ( es decir pasar de activo a inactivo)
+     * permite eliminar un objeto 
+     * @param array $param
+     * @return boolean
+     */
+    public function baja($param)
+    {
+        $resp = false;
+        if ($this->seteadosCamposClaves($param)) {
+            $elObjtArchivoE = $this->cargarObjetoConClave($param);
+            if ($elObjtArchivoE != null and $elObjtArchivoE->eliminar()) {
                 $resp = true;
-            } else {
-                $this->setmensajeoperacion("Usuariorol->insertar: ".$base->getError());
             }
-        } else {
-            $this->setmensajeoperacion("Usuariorol->insertar: ".$base->getError());
         }
+
         return $resp;
     }
-   
-//COMENTARIO: NO EXISTE FUNCION MODIFICAR PORQUE TODOS LOS DATOS SON CLAVE PRIMARIA DE OTRA TABLA
-/*------------------------ELIMINAR----------------------------------------*/
-    public function eliminar(){
-        $resp = false;
-        $base=new BaseDatos();
-        $sql="DELETE FROM usuariorol WHERE idusuario = ".$this->getOBjusuario()."and idrol =".$this->getOBjrol();
-        if ($base->Iniciar()) {
-            if ($base->Ejecutar($sql)) {
-                return true;
-            } else {
-                $this->setmensajeoperacion("Usuariorol->eliminar: ".$base->getError());
-            }
-        } else {
-            $this->setmensajeoperacion("Usuariorol->eliminar: ".$base->getError());
+
+    /*---------------- BUSCAR OBJ EN BASE DE DATOS ----------------*/
+    /**
+     * Puede traer un obj específico o toda la lista si el parámetro es null
+     * permite buscar un objeto
+     * @param array $param
+     * @return array
+     */
+    public function buscar($param)
+    {
+        $where = " true ";
+        if ($param <> NULL) {
+            if (isset($param['idusuario']))
+                $where .= " and idusuario =" . $param['idusuario'];
+            if (isset($param['idrol']))
+                $where .= " and idrol =" . $param['idrol'];
         }
-        return $resp;
-    }
-    
-/*------------------------------LISTAR--------------------------------------------*/    
-    public static function listar($parametro=""){
-        $arreglo = array();
-        $base=new BaseDatos();
-        $consultasql="SELECT * FROM usuariorol ";
-        if ($parametro!="") {
-            $consultasql.='WHERE '.$parametro;
-        }
-        $res = $base->Ejecutar($consultasql);
-        if($res>-1){
-            if($res>0){
-                
-                while ($row = $base->Registro()){
-                    $objUsuario= NULL;
-                    if ($row['idusuario'] != null) { 
-                        $objUsuario = new Usuario(); 
-                        $objUsuario->setIdusuario($row['idusuario']); 
-                        $objUsuario->cargar(); }
-                    $objRol= NULL;
-                    if ($row['idrol'] != null) { 
-                        $objRol = new Rol(); 
-                        $objRol->setIdrol($row['idrol']); 
-                        $objRol->cargar(); }
-                       
-                        $obj= new Usuariorol();
-                        $obj->setear( $objUsuario,$objRol);
-                        array_push($arreglo, $obj);
-                   
-                }
-               
-            }
-            
-        } else {
-            $this->setmensajeoperacion("Auto->listar: ".$base->getError());
-        }
- 
+        $arreglo = UsuarioRol::listar($where);
         return $arreglo;
     }
-    
+
+    /*---------------- LISTAR ROLES DE UN USUARIO ----------------*/
+    /** 
+     * Busca todos los UsuarioRol correspondientes a un objusuario
+     * lista todos los roles que tiene el usuario
+     * @param object
+     * @return array devuelve las descripciones de cada rol de dicho usuario
+     */
+    public function buscarRolesUsuario($elObjtUsuario)
+    {
+        $listaUsRol = [];
+        //listo todos los obj UsuarioRol
+        $listaUsRol = $this->buscar(null);
+        //print_r($listaUsRol);
+        if ($listaUsRol != "") {
+            $roles = [];
+            //agrego todos los roles que tenga el usuario en el array $roles
+            foreach ($listaUsRol as $UsuarioRol) {
+                if ($UsuarioRol->getIdUsuario()->getIdUsuario() == $elObjtUsuario->getIdUsuario()) {
+                    $roldescrip = $UsuarioRol->getIdrol()->getRodescripcion();
+                    array_push($roles, $roldescrip);
+                }
+            }
+        }
+        return $roles;
+    }
 }
-
-
-?>

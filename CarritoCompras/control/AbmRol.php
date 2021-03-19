@@ -1,177 +1,129 @@
-<?php 
-class Rol {
-/*-----------------------ATRIBUTOS-----------------------------*/
-    private $idrol;
-    private $rodescripcion;
-    private $mensajeoperacion;
-
-
-/*-----------------------CONSTRUCTOR---------------------------*/   
-    public function __construct(){
-        
-        $this->idrol="";
-        $this->rodescripcion="";
-        $this->mensajeoperacion ="";
-    }
-   
-/*---------------------METODOS GETTERS --------------------------*/
-     /**
-     * @return mixed
-     */
-    public function getIdrol()
-    {
-        return $this->idrol;
-    }
-
+<?php
+class AbmRol
+{
     /**
-     * @return mixed
+     * Espera como parametro un arreglo asociativo donde las claves coinciden 
+     * con los nombres de las variables instancias del objeto
+     * @param array $param
+     * @return Rol
      */
-    public function getRodescripcion()
+    private function cargarObjeto($param)
     {
-        return $this->rodescripcion;
-    }
+        $obj = null;
 
-    /**
-     * @return mixed
-     */
-    public function getMensajeoperacion()
-    {
-        return $this->mensajeoperacion;
-    }
-/*---------------------------METODOS SETTERS--------------------------------------*/
-    /**
-     * @param mixed $idrol
-     */
-    public function setIdrol($idrol)
-    {
-        $this->idrol = $idrol;
-    }
-
-    /**
-     * @param mixed $rodescripcion
-     */
-    public function setRodescripcion($rodescripcion)
-    {
-        $this->rodescripcion = $rodescripcion;
-    }
-
-    /**
-     * @param mixed $mensajeoperacion
-     */
-    public function setMensajeoperacion($mensajeoperacion)
-    {
-        $this->mensajeoperacion = $mensajeoperacion;
-    }
-
-/*-------------SETEAR CON TODOS LOS DATOS------------------*/
-     public function setear($idrol,$rodescripcion)    {
-        $this->setIdrol($idrol);
-        $this->setRodescripcion($rodescripcion);
-       
-       
+        if (array_key_exists('idrol', $param) and array_key_exists('rodescripcion', $param)) {
+            $obj = new Rol();
+            $obj->setear($param['idrol'], $param['rodescripcion']);
         }
-/*----------------------CARGAR -----------------------------*/
-    public function cargar(){
-        $resp = false;
-        $base=new BaseDatos();
-        $sql="SELECT * FROM rol WHERE idrol = ".$this->getIdrol();
-        if ($base->Iniciar()) {
-            $res = $base->Ejecutar($sql);
-            if($res>-1){
-                if($res>0){
-                    $row = $base->Registro();
-                    $this->setear($row['idrol'],$row['rodescripcion']);
-                }
-            }  
-        } else {
-            $this->setmensajeoperacion("Rol->listar: ".$base->getError());
-        }
-        return $resp;  
+        return $obj;
     }
 
-/*------------------------INSERTAR----------------------------------------*/
-    public function insertar(){
+    /*---------------- CARGAR SOLO CON LA CLAVE ----------------*/
+    /**
+     * Espera como parametro un arreglo asociativo donde las claves 
+     * coinciden con los nombres de las variables instancias del objeto que son claves
+     * @param array $param
+     * @return Rol
+     */
+    private function cargarObjetoConClave($param)
+    {
+        $obj = null;
+
+        if (isset($param['idrol'])) {
+            $obj = new Rol();
+            $obj->setear($param['idrol'], null);
+        }
+        return $obj;
+    }
+
+    /*---------------- CHEQUEO CLAVES SETEADAS ----------------*/
+    /**
+     * Corrobora que dentro del arreglo asociativo estan seteados los campos claves
+     * @param array $param
+     * @return boolean
+     */
+    private function seteadosCamposClaves($param)
+    {
         $resp = false;
-        $base=new BaseDatos(); 
-        $sql="INSERT INTO rol (rodescripcion)  VALUES ('".$this->getRodescripcion()."')";
-        if ($base->Iniciar()) {
-            if ($elid = $base->Ejecutar($sql)) {
-                $this->setIdrol($elid); 
+        if (isset($param['idrol']))
+            $resp = true;
+        return $resp;
+    }
+
+    /*---------------- INSERTAR EN BASE DE DATOS ----------------*/
+    /**
+     * Carga un objeto con los datos pasados por parámetro y lo 
+     * Inserta en la base de datos
+     * @param array $param
+     * @return boolean
+     */
+    public function alta($param)
+    {
+        $resp = false;
+
+        $elObjtRol = $this->cargarObjeto($param);
+
+        if ($elObjtRol != null and $elObjtRol->insertar()) {
+            $resp = true;
+        }
+        return $resp;
+    }
+
+    /*---------------- ELIMINA OBJETO DE BASE DE DATOS ----------------*/
+    /**
+     * Por lo general no se usa ya que se utiliza borrado lógico ( es decir pasar de activo a inactivo)
+     * permite eliminar un objeto 
+     * @param array $param
+     * @return boolean
+     */
+    public function baja($param)
+    {
+        $resp = false;
+        if ($this->seteadosCamposClaves($param)) {
+            $elObjtRol = $this->cargarObjetoConClave($param);
+            if ($elObjtRol != null and $elObjtRol->eliminar()) {
                 $resp = true;
-            } else { 
-      
-                $this->setmensajeoperacion("Rol->insertar: ".$base->getError());
-            } 
-         } else {
-            $this->setmensajeoperacion("Rol->insertar: ".$base->getError());
+            }
         }
         return $resp;
     }
-   
-/*------------------------MODIFICAR----------------------------------------*/
-    public function modificar(){
+
+    /*---------------- MODIFICA EN BASE DE DATOS ----------------*/
+    /**
+     * Carga un obj con los datos pasados por parámetro y lo modifica en base de datos (update)
+     * @param array $param
+     * @return boolean
+     */
+    public function modificacion($param)
+    {
+        //echo "Estoy en modificacion";
         $resp = false;
-        $base=new BaseDatos();
-        $sql="UPDATE rol SET rodescripcion='".$this->getRodescripcion()."' WHERE idrol='". $this->getIdrol()."'";
-        if ($base->Iniciar()) {
-            if ($base->Ejecutar($sql)) {
+        if ($this->seteadosCamposClaves($param)) {
+            $elObjtRol = $this->cargarObjeto($param);
+            if ($elObjtRol != null and $elObjtRol->modificar()) {
                 $resp = true;
-            } else { 
-         
-                $this->setmensajeoperacion("Rol->modificar: ".$base->getError());
             }
-        } else {
-            $this->setmensajeoperacion("Rol->modificar: ".$base->getError());
         }
         return $resp;
     }
- 
-/*------------------------ELIMINAR----------------------------------------*/
-    public function eliminar(){
-        $resp = false;
-        $base=new BaseDatos();
-        $sql="DELETE FROM rol WHERE idrol=".$this->getIdrol();
-        if ($base->Iniciar()) {
-            if ($base->Ejecutar($sql)) {
-                return true;
-            } else {
-                $this->setmensajeoperacion("Rol->eliminar: ".$base->getError());
-            }
-        } else {
-            $this->setmensajeoperacion("Rol->eliminar: ".$base->getError());
+
+    /*---------------- BUSCAR OBJ EN BASE DE DATOS ----------------*/
+    /**
+     * Puede traer un obj específico o toda la lista si el parámetro es null
+     * permite buscar un objeto
+     * @param array $param
+     * @return array
+     */
+    public function buscar($param)
+    {
+        $where = " true ";
+        if ($param <> NULL) {
+            if (isset($param['idrol']))
+                $where .= " and idrol =" . $param['idrol'];
+            if (isset($param['rodescripcion']))
+                $where .= " and rodescripcion =" . $param['rodescripcion'];
         }
-        return $resp;
-    }
-/*------------------------------LISTAR--------------------------------------------*/     
-    public static function listar($parametro=""){
-        $arreglo = array();
-        $base=new BaseDatos();
-        $consultasql="SELECT * FROM rol ";
-        if ($parametro!="") {
-            $consultasql.='WHERE '.$parametro;
-        }
-        $res = $base->Ejecutar($consultasql);
-        if($res>-1){
-            if($res>0){
-                
-                while ($row = $base->Registro()){
-                    $obj= new Rol();
-                    
-                    $obj->setear($row['idrol'],$row['rodescripcion']);
-                    array_push($arreglo, $obj);
-                   
-                }
-               
-            }
-            
-        } else {
-            $this->setmensajeoperacion("Rol->listar: ".$base->getError());
-        }
- 
+        $arreglo = Rol::listar($where);
         return $arreglo;
     }
-    
 }
-
-
-?>

@@ -25,8 +25,8 @@ class Usuario
         $this->setIdUsuario($idUsuario);
         $this->setUsNombre($usNombre);
         $this->setUsPass($uspass);
-        $this->setUsLogin($usMail);
-        $this->setUsClave($usDeshabilitado);
+        $this->setUsMail($usMail);
+        $this->setUsDeshabilitado($usDeshabilitado);
     }
 
     public function getIdUsuario()
@@ -59,7 +59,7 @@ class Usuario
     {
         return $this->usmail;
     }
-    public function setUsLogin($usMail)
+    public function setUsMail($usMail)
     {
         $this->usmail = $usMail;
     }

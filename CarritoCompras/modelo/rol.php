@@ -15,42 +15,38 @@ class Rol
         $this->mensajeoperacion = "";
     }
 
+    public function setear($idrol, $rodescripcion)
+    {
+        $this->setIdrol($idrol);
+        $this->setRodescripcion($rodescripcion);
+    }
+
 
     public function getIdrol()
     {
         return $this->idrol;
+    }
+    public function setIdrol($idrol)
+    {
+        $this->idrol = $idrol;
     }
 
     public function getRodescripcion()
     {
         return $this->rodescripcion;
     }
-
-    public function getMensajeoperacion()
-    {
-        return $this->mensajeoperacion;
-    }
-
-    public function setIdrol($idrol)
-    {
-        $this->idrol = $idrol;
-    }
-
     public function setRodescripcion($rodescripcion)
     {
         $this->rodescripcion = $rodescripcion;
     }
 
-    public function setMensajeoperacion($mensajeoperacion)
+    public function getmensajeoperacion()
+    {
+        return $this->mensajeoperacion;
+    }
+    public function setmensajeoperacion($mensajeoperacion)
     {
         $this->mensajeoperacion = $mensajeoperacion;
-    }
-
-    /*-------------SETEAR CON TODOS LOS DATOS------------------*/
-    public function setear($idrol, $rodescripcion)
-    {
-        $this->setIdrol($idrol);
-        $this->setRodescripcion($rodescripcion);
     }
 
 
